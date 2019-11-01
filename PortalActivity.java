@@ -109,12 +109,12 @@ public class PortalActivity extends AppCompatActivity {
         final Query query = mDatabase.child("user").child(uid).child("deviceGroup").child(androidId);
 
         // Check if user exist
-        final Query gameQuery = mDatabase.child("user").child(uid);
+        final Query gQuery = mDatabase.child("user").child(uid);
 
-        gameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        gQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                
 
                     Map<String, Object> map = new HashMap<>();
                     map.put("date", date);
@@ -123,29 +123,24 @@ public class PortalActivity extends AppCompatActivity {
                     map.put("brand", brand);
                     map.put("model", model);
                     map.put("token", token);
+                
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("date", date);
+                    map.put("androidUID", androidId);
+                    map.put("manufacturer", manufacturer);
+                    map.put("brand", brand);
+                    map.put("model", model);
+                    map.put("token", token);
+                
+                
+                if(snapshot.exists()){
 
                     // Save info in deviceGroup to send notifications if token is refresh
                     mDatabase.child("user").child(uid).child("deviceGroup").child(androidId).setValue(map);
 
                 }else{
 
-                    Map<String, Object> map1 = new HashMap<>();
-                    map1.put("create", date);
-                    map1.put("emailverify", "false");
-                    map1.put("useremail", femail);
-                    map1.put("username", femail);
-                    map1.put("userpass", "_look_");
-
                     mDatabase.child("user").child(uid).updateChildren(map1);
-
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("date", date);
-                    map.put("androidUID", androidId);
-                    map.put("manufacturer", manufacturer);
-                    map.put("brand", brand);
-                    map.put("model", model);
-                    map.put("token", token);
-
                     mDatabase.child("user").child(uid).child("deviceGroup").child(androidId).setValue(map);
 
                 }
